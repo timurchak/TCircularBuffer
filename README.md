@@ -1,2 +1,2 @@
-# TCircularBuffer
- My implementation Circular Buffer
+# TRingBuffer
+My implementation Circular Buffer
