@@ -21,10 +21,10 @@ public:
     std::vector<T> toStdVector();
     void clear();
     void clear(int newCapasity);
-    T lastValue(bool& ok);
-    T lastValue(int i, bool& ok);
+    T lastValue(bool* ok = nullptr);
+    T lastValue(int i, bool* ok = nullptr);
     T lastValueIndex(int i);
-    std::vector<T> lastValueStdVector(int i, bool& ok);
+    std::vector<T> lastValueStdVector(int i, bool* ok = nullptr);
     T& at(int i);
     T& at(int i) const;
 
@@ -275,24 +275,32 @@ template <class T> void TRingBuffer<T>::setCapacity(int value)
     capacity = value;
 }
 
-template <class T> T TRingBuffer<T>::lastValue(bool& ok)
+template <class T> T TRingBuffer<T>::lastValue(bool* ok)
 {
     if (count > 0) {
-        ok = true;
+        if(ok) {
+            *ok = true;
+        }  
         return data[lastIndex];
     }
-    ok = false;
+    if(ok) {
+        *ok = true;
+    }  
     return 0;
 }
 
-template <class T> T TRingBuffer<T>::lastValue(int i, bool& ok)
+template <class T> T TRingBuffer<T>::lastValue(int i, bool* ok)
 {
     int index = (count - i) - 1;
     if (index > 0) {
-        ok = true;
+        if(ok) {
+            *ok = true;
+        }        
         return data[calcIndex(index)];
     }
-    ok = false;
+    if(ok) {
+        *ok = true;
+    }  
     return 0;
 }
 
@@ -305,7 +313,7 @@ template <class T> T TRingBuffer<T>::lastValueIndex(int i)
     return 0;
 }
 
-template <class T> std::vector<T> TRingBuffer<T>::lastValueStdVector(int i, bool& ok)
+template <class T> std::vector<T> TRingBuffer<T>::lastValueStdVector(int i, bool* ok)
 {
     std::vector<T> vecResult(i);
     int j = 0;
